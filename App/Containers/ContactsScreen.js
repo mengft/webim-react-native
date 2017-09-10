@@ -225,16 +225,10 @@ class ContactsScreen extends React.Component {
   }
 
   _renderSectionFriends (rowData) {
-        // {/* NavigationActions.contactInfo({'uid': rowData}) */}
-
     return (
       <TouchableOpacity onPress={() => {
         this.handleInitSearch()
-        NavigationActions.message({
-          type: 'replace',
-          chatType: 'chat',
-          id: rowData
-        })
+        NavigationActions.contactInfo({'uid': rowData})
       }}>
         <View style={Styles.row}>
           <Image source={Images.default} resizeMode='cover' style={Styles.rowLogo} />
@@ -248,7 +242,7 @@ class ContactsScreen extends React.Component {
 
   _renderSectionNotices (rowData) {
     let keys = Object.keys(rowData)
-    if (keys.length == 0) return null
+    if (keys.length === 0) return null
     return (
       <View>
         <View style={Styles.noticeHeaderWrapper}>
@@ -256,7 +250,7 @@ class ContactsScreen extends React.Component {
             <Image source={Images.requestsIcon} />
           </View>
           <View style={Styles.noticeHeaderMiddle}>
-            <Text style={Styles.noticeHeaderText}>{I18n.t('contactRequests')}</Text>
+            <Text style={Styles.noticeHeaderText}>好友请求</Text>
           </View>
           <View style={Styles.noticeHeaderRight}>
             <Text
@@ -294,7 +288,7 @@ class ContactsScreen extends React.Component {
                 onPress={() => {
                   this.handleAccept(v.from)
                 }}
-                text={I18n.t('accept')}
+                text={'接受'}
                 color={Colors.snow}
                 backgroundColor={Colors.buttonGreen}
               />
@@ -303,7 +297,7 @@ class ContactsScreen extends React.Component {
                 onPress={() => {
                   this.handleDecline(v.from)
                 }}
-                text={I18n.t('decline')}
+                text={'拒绝'}
                 color={Colors.snow}
                 backgroundColor={Colors.buttonGrey}
               />

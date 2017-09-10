@@ -3,7 +3,6 @@ import Immutable from 'seamless-immutable'
 import WebIM from '../Lib/WebIM'
 import {Actions as NavigationActions, ActionConst} from 'react-native-router-flux'
 import RosterActions from '../Redux/RosterRedux'
-import GroupActions from '../Redux/GroupRedux'
 
 /* ------------- Types and Action Creators ------------- */
 

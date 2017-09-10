@@ -10,9 +10,6 @@ import LoginScreen from '../Containers/LoginScreen'
 import RegisterScreen from '../Containers/RegisterScreen'
 import ContactsScreen from '../Containers/ContactsScreen'
 import ContactInfoScreen from '../Containers/ContactInfoScreen'
-import GroupListScreen from '../Containers/GroupListScreen'
-import GroupCreateScreen from '../Containers/GroupCreateScreen'
-import GroupMembersScreen from '../Containers/GroupMembersScreen'
 import MessageScreen from '../Containers/MessageScreen'
 import AddContactModal from '../Containers/AddContactModal'
 import InfoNavBar from '../Components/InfoNavBar'
@@ -116,38 +113,6 @@ class NavigationRouter extends Component {
               navBar={InfoNavBar}
               hideTabBar
               hideNavBar={false}
-            />
-            {/* 群组列表 */}
-            {/* rightIcon="ios-add" */}
-            {/* onRight={() => { */}
-            {/* NavigationActions.groupCreate() */}
-            {/* }} */}
-            <Scene key='groupList' component={GroupListScreen}
-              title='Groups'
-              navBar={InfoNavBar}
-              hideNavBar={false}
-              hideTabBar
-            />
-            {/* 群组创建 */}
-            <Scene key='groupCreate' component={GroupCreateScreen}
-              schema='modal'
-              title='Groups Create'
-              navBar={InfoNavBar}
-              rightTitle={I18n.t('cancel')}
-              onRight={() => {
-                NavigationActions.pop()
-              }}
-              leftShow={false}
-              direction='vertical'
-              hideNavBar={false}
-              hideTabBar
-            />
-            {/* 群组成员 */}
-            <Scene key='groupMembers' component={GroupMembersScreen}
-              title='Hyphenate Events'
-              navBar={InfoNavBar}
-              hideNavBar={false}
-              hideTabBar
             />
           </Scene>
         </Scene>

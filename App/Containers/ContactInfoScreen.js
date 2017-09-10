@@ -23,7 +23,7 @@ import {Actions as NavigationActions} from 'react-native-router-flux'
 import RosterActions from '../Redux/RosterRedux'
 import BlacklistActions from '../Redux/BlacklistRedux'
 
-const SHEET_BUTTON = ['Delete', 'Cancel']
+const SHEET_BUTTON = ['删除', '取消']
 
 class ContactInfoScreen extends Component {
   // ------------ init -------------
@@ -59,7 +59,7 @@ class ContactInfoScreen extends Component {
   // ------------ renders -------------
 
   handleDelete() {
-    if (Platform.OS == 'ios') {
+    if (Platform.OS === 'ios') {
       //TODO: 不同button如何定义不同的颜色
       ActionSheetIOS.showActionSheetWithOptions({
           options: SHEET_BUTTON,
@@ -68,11 +68,11 @@ class ContactInfoScreen extends Component {
         },
         (buttonIndex) => {
           // this.setState({clicked: SHEET_BUTTON[buttonIndex]});
-          if (SHEET_BUTTON[buttonIndex] == 'Delete') {
+          if (SHEET_BUTTON[buttonIndex] === '删除') {
             this.props.removeContact(this.props.uid)
           }
         })
-    } else if (Platform.OS == 'android') {
+    } else if (Platform.OS === 'android') {
       this.props.removeContact(this.props.uid)
     }
 
@@ -109,23 +109,6 @@ class ContactInfoScreen extends Component {
             <InfoNavBar containerStyle={{borderBottomWidth: 0}}/>
             <Image source={Images.default} resizeMode='cover' style={Styles.photo}/>
             <Text style={Styles.name}>{uid}</Text>
-            <View style={Styles.rowIcons}>
-              <TouchableOpacity style={[Styles.rowIcon, Styles.chat]} onPress={() => {
-                NavigationActions.message({
-                  type: 'replace',
-                  chatType: 'chat',
-                  id: this.props.uid
-                })
-              }}>
-                <Image source={Images.buttonChat} resizeMode='center'/>
-              </TouchableOpacity>
-              <TouchableOpacity style={[Styles.rowIcon, Styles.call]}>
-                <Image source={Images.buttonCall} resizeMode='center'/>
-              </TouchableOpacity>
-              <TouchableOpacity style={[Styles.rowIcon, Styles.video]}>
-                <Image source={Images.buttonVideo} resizeMode='center'/>
-              </TouchableOpacity>
-            </View>
           </View>
           {/* 信息区 */}
           <View style={Styles.rowDetails}>
@@ -146,19 +129,21 @@ class ContactInfoScreen extends Component {
               </View>
             </View>
           </View>
-          {/* 操作区*/}
           <View style={[Styles.rowDetails, Styles.operator]}>
-            <View style={[Styles.rowDetail, Styles.rowBorder, Styles.horizontal]}>
-              <View style={[Styles.flex]}>
-                <Text style={Styles.text}>{I18n.t('blockContact')}</Text>
-              </View>
-              <View style={[Styles.flex, Styles.end]}>
-                <Switch onValueChange={this.handleSwitch.bind(this)} value={isBlocked}/>
-              </View>
+            <View style={[Styles.rowDetail, Styles.rowBorder]}>
+              <TouchableOpacity onPress={() => {
+                NavigationActions.message({
+                  type: 'replace',
+                  chatType: 'chat',
+                  id: this.props.uid
+                })
+              }} style={[Styles.flex]}>
+                <Text style={[Styles.text, { color: '#08ba6e' }]}>进入聊天界面</Text>
+              </TouchableOpacity>
             </View>
             <View style={[Styles.rowDetail]}>
               <TouchableOpacity onPress={this.handleDelete.bind(this)} style={[Styles.flex]}>
-                <Text style={[Styles.text, Styles.deleteText]}>{I18n.t('deleteContact')}</Text>
+                <Text style={[Styles.text, Styles.deleteText]}>删除好友</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -167,7 +152,6 @@ class ContactInfoScreen extends Component {
     )
   }
 }
-
 
 ContactInfoScreen.propTypes = {
   // 当前查看的用户id

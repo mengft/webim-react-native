@@ -55,7 +55,7 @@ export default create({
   rowIcons: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     height: 56,
     width: 223,
     marginTop: 23
@@ -71,7 +71,7 @@ export default create({
   rowDetail: {
     flex: 1,
     flexDirection: 'column',
-    height: 45
+    height: 52
   },
   rowBorder: {
     borderBottomWidth: StyleSheet.hairlineWidth,

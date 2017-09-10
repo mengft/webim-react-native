@@ -17,7 +17,6 @@ import SubscribeActions from '../Redux/SubscribeRedux'
 import BlacklistActions from '../Redux/BlacklistRedux'
 import RosterActions from '../Redux/RosterRedux'
 import MessageActions from '../Redux/MessageRedux'
-import GroupActions from '../Redux/GroupRedux'
 import {Actions as NavigationActions} from 'react-native-router-flux'
 import axios from 'axios'
 
@@ -48,7 +47,7 @@ class App extends Component {
       // xmpp连接成功
       onOpened: (msg) => {
         // 出席后才能接受推送消息
-        WebIM.conn.setPresence();
+        WebIM.conn.setPresence()
         // 获取好友信息
         store.dispatch(RosterActions.getContacts())
         // 通知登陆成功
@@ -56,7 +55,6 @@ class App extends Component {
         // 获取黑名单列表
         store.dispatch(BlacklistActions.getBlacklist())
         // 获取群组列表
-        store.dispatch(GroupActions.getGroups())
 
         NavigationActions.contacts()
       },
@@ -65,8 +63,6 @@ class App extends Component {
         console.debug('onPresence', msg, store.getState())
         switch (msg.type) {
           case 'subscribe':
-
-
             // 加好友时双向订阅过程，所以当对方同意添加好友的时候
             // 会有一步对方自动订阅本人的操作，这步操作是自动发起
             // 不需要通知提示，所以此处通过state=[resp:true]标示
@@ -95,7 +91,7 @@ class App extends Component {
       onError: (error) => {
         console.log(error)
         // 16: server-side close the websocket connection
-        if (error.type == WebIM.statusCode.WEBIM_CONNCTION_DISCONNECTED) {
+        if (error.type === WebIM.statusCode.WEBIM_CONNCTION_DISCONNECTED) {
           console.log('WEBIM_CONNCTION_DISCONNECTED', WebIM.conn.autoReconnectNumTotal, WebIM.conn.autoReconnectNumMax);
           if (WebIM.conn.autoReconnectNumTotal < WebIM.conn.autoReconnectNumMax) {
             return;
@@ -105,13 +101,13 @@ class App extends Component {
           return;
         }
         // 8: offline by multi login
-        if (error.type == WebIM.statusCode.WEBIM_CONNCTION_SERVER_ERROR) {
+        if (error.type === WebIM.statusCode.WEBIM_CONNCTION_SERVER_ERROR) {
           console.log('WEBIM_CONNCTION_SERVER_ERROR');
           Alert.alert('Error', 'offline by multi login')
           NavigationActions.login()
           return;
         }
-        if (error.type == 1) {
+        if (error.type === 1) {
           let data = error.data ? error.data.data : ''
           data && Alert.alert('Error', data)
           store.dispatch(LoginActions.loginFailure(error))
