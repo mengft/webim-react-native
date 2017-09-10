@@ -13,7 +13,7 @@ const {Types, Creators} = createActions({
   // 更新黑名单列表
   getBlacklist: () => {
     return (dispatch, getState) => {
-      WebIM.conn.getBlacklist();
+      WebIM.conn.getBlacklist()
     }
   },
   // 添加到黑名单
@@ -59,7 +59,7 @@ const {Types, Creators} = createActions({
         }
       })
     }
-  },
+  }
 })
 
 export const BlacklistTypes = Types
@@ -77,14 +77,14 @@ export const INITIAL_STATE = Immutable({
 export const updateBlacklist = (state, {list}) => {
   return state.merge({
     byName: list,
-    names: Object.keys(list).sort(),
+    names: Object.keys(list).sort()
   })
 }
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.UPDATE_BLACKLIST]: updateBlacklist,
+  [Types.UPDATE_BLACKLIST]: updateBlacklist
 })
 
 /* ------------- Selectors ------------- */

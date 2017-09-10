@@ -1,22 +1,17 @@
-// @flow
-
-import {StyleSheet, PixelRatio} from 'react-native'
-import {Colors, Metrics} from '../../Themes'
-import {create} from '../../Lib/PlatformStyleSheet'
+import { StyleSheet } from 'react-native'
+import { Colors } from '../../Themes'
+import { create } from '../../Lib/PlatformStyleSheet'
 
 export default create({
   container: {
     flex: 1,
     flexDirection: 'column',
     backgroundColor: '#fff',
-    //
     ios: {
       marginTop: 18
     }
   },
-  // 头
   header: {
-    // flex: 1,
     height: 44,
     paddingHorizontal: 10,
     paddingVertical: 5,
@@ -31,7 +26,6 @@ export default create({
     flexDirection: 'row'
   },
   searchRow: {
-    // color: Colors.blueyGrey,
     flex: 1,
     width: 100,
     height: 30,
@@ -69,14 +63,12 @@ export default create({
     justifyContent: 'center'
   },
   placeholderTextColor: Colors.blueyGrey,
-  // selectionColor: '#fff',
   searchPlus: {
     width: 30,
     height: 30,
     alignItems: 'center',
     justifyContent: 'center'
   },
-  // ListView
   listView: {
     flex: 1
   },

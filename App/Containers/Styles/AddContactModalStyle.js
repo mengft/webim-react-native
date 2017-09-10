@@ -1,7 +1,3 @@
-// @flow
-
-import {StyleSheet, PixelRatio} from 'react-native'
-import {Colors, Metrics} from '../../Themes'
 import {create} from '../../Lib/PlatformStyleSheet'
 
 export default create({
@@ -11,7 +7,6 @@ export default create({
     flexDirection: 'column'
   },
   body: {
-    // flex: 1,
     height: 200,
     marginTop: 100,
     justifyContent: 'center',
@@ -20,6 +15,5 @@ export default create({
   },
   button: {
     marginTop: 39
-    // flex: 0,
   }
 })

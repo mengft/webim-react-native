@@ -17,9 +17,9 @@ const {Types, Creators} = createActions({
 
       dispatch({type: 'USER_LOGOUT'})
 
-      NavigationActions.login({type: ActionConst.REPLACE});
+      NavigationActions.login({type: ActionConst.REPLACE})
     }
-  },
+  }
 })
 
 export const WebIMTypes = Types
@@ -48,12 +48,11 @@ export const removeSubscribe = (state, {name}) => {
   })
 }
 
-
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.SUBSCRIBE]: subscribe,
-  [Types.REMOVE_SUBSCRIBE]: removeSubscribe,
+  [Types.REMOVE_SUBSCRIBE]: removeSubscribe
 })
 
 /* ------------- Selectors ------------- */

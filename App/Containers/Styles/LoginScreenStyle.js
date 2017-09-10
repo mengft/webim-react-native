@@ -1,8 +1,6 @@
-// @flow
-
-import {StyleSheet, PixelRatio} from 'react-native'
-import {Colors, Metrics} from '../../Themes'
-import {create} from '../../Lib/PlatformStyleSheet'
+import { PixelRatio } from 'react-native'
+import { Colors, Metrics } from '../../Themes'
+import { create } from '../../Lib/PlatformStyleSheet'
 
 export default create({
   container: {
@@ -25,8 +23,6 @@ export default create({
       marginTop: 31.5,
       marginBottom: 32,
       borderRadius: 2,
-      // and only
-      // elevation: 3,
       marginHorizontal: 25.5
     }
   },
@@ -53,7 +49,6 @@ export default create({
       paddingHorizontal: Metrics.doubleBaseMargin
     }
   },
-  // 提示行
   tips: {
     color: Colors.almostWhite,
     textAlign: 'center'
@@ -62,13 +57,11 @@ export default create({
     alignItems: 'center'
   },
   tipsButtonWrapper: {
-    // alignSelf: 'stretch',
     marginLeft: 6
   },
   rowLabel: {
     color: Colors.charcoal
   },
-  // 输入框
   textInput: {
     height: 50,
     color: Colors.almostBlack,
@@ -79,7 +72,6 @@ export default create({
     color: Colors.steel,
     backgroundColor: Colors.snow
   },
-  // sign in 按钮
   loginRow: {
     paddingBottom: Metrics.doubleBaseMargin,
     flexDirection: 'row'
@@ -89,7 +81,6 @@ export default create({
     left: 0,
     bottom: 0,
     right: 0
-    // height: 50
   },
   loginButtonWrapper: {
     ios: {
@@ -128,7 +119,6 @@ export default create({
     textDecorationStyle: 'solid',
     textDecorationColor: '#fff'
   },
-  // 顶部logo
   topLogo: {
     alignSelf: 'center',
     resizeMode: 'contain'

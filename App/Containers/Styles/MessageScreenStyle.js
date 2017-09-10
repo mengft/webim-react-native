@@ -1,20 +1,12 @@
-// @flow
-
-import {StyleSheet, PixelRatio} from 'react-native'
-import {Colors, Metrics, Fonts} from '../../Themes'
-import {create} from '../../Lib/PlatformStyleSheet'
+import { StyleSheet } from 'react-native'
+import { Colors, Fonts } from '../../Themes'
+import { create } from '../../Lib/PlatformStyleSheet'
 
 export default create({
   container: {
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   search: {
-    // position: 'absolute',
-    // left: 0,
-    // right: 0,
-    // bottom: 0,
-    // width: 50,
-    // height: 30
     marginTop: 5,
     flexDirection: 'column',
     paddingTop: 10,
@@ -24,7 +16,7 @@ export default create({
   },
   inputRow: {
     paddingHorizontal: 15,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   iconRow: {
     flexDirection: 'row',
@@ -36,11 +28,11 @@ export default create({
     borderBottomColor: Colors.coolGrey50
   },
   iconTouch: {
-    padding: 8,
+    padding: 8
   },
   searchRow: {
     flex: 1,
-    backgroundColor: Colors.snow,
+    backgroundColor: Colors.snow
   },
   searchInput: {
     borderRadius: 3,
@@ -53,7 +45,7 @@ export default create({
   },
   searchIcon: {
     alignItems: 'flex-end',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   searchFocus: {
     flex: 0,
@@ -63,37 +55,33 @@ export default create({
   searchExtra: {
     marginLeft: 15,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   searchPlus: {
     width: 30,
     height: 30,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   sendText: {
     ...Fonts.rowText,
     color: Colors.textRed,
     textAlign: 'center'
   },
-  // message left
   row: {
     flex: 1,
     flexDirection: 'row',
     paddingLeft: 15,
-    paddingTop: 15,
+    paddingTop: 15
   },
   rowLogo: {
     width: 25,
     height: 25,
     borderRadius: 12.5,
-    marginRight: 5,
-    // marginTop: 12
+    marginRight: 5
   },
   rowImage: {
     flex: 1,
-    // height: 100,
-    // alignSelf: 'flex-start',
     minHeight: 50,
     borderRadius: 10,
     resizeMode: 'contain'
@@ -125,8 +113,7 @@ export default create({
   },
   messageText: {
     color: Colors.almostBlack,
-    paddingBottom: 2,
-    // textAlignVertical: 'center'
+    paddingBottom: 2
   },
   messageTextRight: {
     color: Colors.snow
@@ -136,7 +123,7 @@ export default create({
     fontSize: 11,
     color: Colors.steelGrey,
     marginTop: 7,
-    marginLeft: 12,
+    marginLeft: 12
   },
   directionEnd: {
     flexDirection: 'row-reverse'
@@ -146,10 +133,10 @@ export default create({
     marginRight: 12
   },
   emojiRow: {
-    backgroundColor: Colors.emojiBackground,
+    backgroundColor: Colors.emojiBackground
   },
   wrapper: {
-    backgroundColor: Colors.emojiBackground,
+    backgroundColor: Colors.emojiBackground
   },
   slide: {
     height: 120,
@@ -163,25 +150,23 @@ export default create({
     flex: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
-    height: 30,
+    height: 30
   },
   sendRow: {
     justifyContent: 'flex-end',
     flexDirection: 'row'
   },
   emoji: {
-    // flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: 30,
     paddingLeft: 4,
     paddingBottom: 1,
-    // height: 30
     color: '#fff'
   },
   send: {
     marginRight: 12,
     paddingVertical: 8,
-    width: 50,
+    width: 50
   }
 })

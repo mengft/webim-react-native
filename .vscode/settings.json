@@ -1,0 +1,21 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "sync.anonymousGist": false,
+    "javascript.validate.enable": false,
+    "javascript.format.enable": false,
+    "flow.useNPMPackagedFlow": true,
+    //"editor.formatOnSave": true
+    "standard.autoFixOnSave": true,
+    "standard.options": {
+      "parser": "babel-eslint",
+      "globals": [
+        "describe",
+        "it",
+        "expect",
+        "test",
+        "fetch",
+        "FormData"
+      ]
+    },
+    "eslint.enable": false
+}

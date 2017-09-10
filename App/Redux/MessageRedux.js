@@ -20,7 +20,7 @@ const msgTpl = {
     type: '', // chat / groupchat
     body: {},
     ext: {},
-    bySelf: false,
+    bySelf: false
   },
   txt: {
     type: 'txt',
@@ -42,7 +42,7 @@ const msgTpl = {
 }
 
 // 统一消息格式：本地发送
-function parseFromLocal(type, to, message = {}, bodyType) {
+function parseFromLocal (type, to, message = {}, bodyType) {
   let ext = message.ext || {}
   let obj = copy(message, msgTpl.base)
   let body = copy(message, msgTpl[bodyType])
@@ -57,7 +57,7 @@ function parseFromLocal(type, to, message = {}, bodyType) {
   }
 }
 // 统一消息格式：服务端
-function parseFromServer(message = {}, bodyType) {
+function parseFromServer (message = {}, bodyType) {
   let ext = message.ext || {}
   let obj = copy(message, msgTpl.base)
   // body 包含：所有message实体信息都放到body当中，与base区分开
@@ -66,24 +66,26 @@ function parseFromServer(message = {}, bodyType) {
   switch (bodyType) {
     case 'txt':
       return {
-        ...obj, status: 'sent',
+        ...obj,
+status: 'sent',
         body: {
-          ...body, ...ext, msg: message.data, type: 'txt',
+          ...body, ...ext, msg: message.data, type: 'txt'
         }
       }
-      break;
+      break
     case 'img':
       return {
-        ...obj, status: 'sent',
+        ...obj,
+status: 'sent',
         body: {
           ...body, ...ext, type: 'img'
         }
       }
-      break;
+      break
   }
 }
 
-function copy(message, tpl) {
+function copy (message, tpl) {
   let obj = {}
   Object.keys(tpl).forEach((v) => {
     obj[v] = message[v] || tpl[v]
@@ -98,27 +100,29 @@ const {Types, Creators} = createActions({
   sendTxtMessage: (chatType, chatId, message = {}) => {
     return (dispatch, getState) => {
       const pMessage = parseFromLocal(chatType, chatId, message, 'txt')
-      const {body, id, to} =  pMessage
+      const {body, id, to} = pMessage
       const {type, msg} = body
-      const msgObj = new WebIM.message(type, id);
+      const msgObj = new WebIM.message(type, id)
       console.log(pMessage)
       msgObj.set({
-        //TODO: cate type == 'chatrooms'
-        msg, to, roomType: false,
+        // TODO: cate type == 'chatrooms'
+        msg,
+to,
+roomType: false,
         success: function () {
           dispatch(Creators.updateMessageStatus(pMessage, 'sent'))
         },
         fail: function () {
           dispatch(Creators.updateMessageStatus(pMessage, 'fail'))
         }
-      });
+      })
 
       // TODO: 群组聊天需要梳理此参数的逻辑
       // if (type !== 'chat') {
       //   msgObj.setGroup('groupchat');
       // }
 
-      WebIM.conn.send(msgObj.body);
+      WebIM.conn.send(msgObj.body)
       dispatch(Creators.addMessage(pMessage, type))
     }
   },
@@ -128,7 +132,7 @@ const {Types, Creators} = createActions({
       const id = WebIM.conn.getUniqueId()
       const type = 'img'
       const to = chatId
-      const msgObj = new WebIM.message(type, id);
+      const msgObj = new WebIM.message(type, id)
       msgObj.set({
         apiUrl: WebIM.config.apiURL,
         ext: {
@@ -136,41 +140,42 @@ const {Types, Creators} = createActions({
           filename: source.fileName || '',
           filetype: source.fileName && (source.fileName.split('.')).pop(),
           width: source.width,
-          height: source.height,
+          height: source.height
         },
         file: {
           data: {
             uri: source.uri, type: 'application/octet-stream', name: source.fileName
           }
         },
-        to, roomType: '',
+        to,
+roomType: '',
         onFileUploadError: function (error) {
           console.log(error)
           dispatch(Creators.updateMessageStatus(pMessage, 'fail'))
         },
         onFileUploadComplete: function (data) {
           console.log(data)
-          url = data.uri + '/' + data.entities[0].uuid;
+          url = data.uri + '/' + data.entities[0].uuid
           dispatch(Creators.updateMessageStatus(pMessage, 'sent'))
         },
         success: function (id) {
           console.log(id)
-        },
-      });
+        }
+      })
 
       // TODO: 群组聊天需要梳理此参数的逻辑
       // if (type !== 'chat') {
       //   msgObj.setGroup('groupchat');
       // }
 
-      WebIM.conn.send(msgObj.body);
+      WebIM.conn.send(msgObj.body)
       pMessage = parseFromLocal(chatType, chatId, msgObj.body, 'img')
       // uri只记录在本地
       pMessage.body.uri = source.uri
       // console.log('pMessage', pMessage, pMessage.body.uri)
       dispatch(Creators.addMessage(pMessage, type))
     }
-  },
+  }
 })
 
 export const MessageTypes = Types
@@ -207,7 +212,7 @@ export const addMessage = (state, {message, bodyType = 'txt'}) => {
     ...message,
     bySelf,
     time: +new Date(),
-    status: status,
+    status: status
   })
   const chatData = state[type] && state[type][chatId] ? state[type][chatId].asMutable() : []
   chatData.push(id)
@@ -236,7 +241,7 @@ export const updateMessageStatus = (state, {message, status = ''}) => {
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADD_MESSAGE]: addMessage,
-  [Types.UPDATE_MESSAGE_STATUS]: updateMessageStatus,
+  [Types.UPDATE_MESSAGE_STATUS]: updateMessageStatus
 })
 
 /* ------------- Selectors ------------- */

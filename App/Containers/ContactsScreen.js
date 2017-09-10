@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react'
+import React, { PropTypes } from 'react'
 import {connect} from 'react-redux'
 import {
   View,
@@ -9,17 +9,12 @@ import {
   TouchableWithoutFeedback
 } from 'react-native'
 
-// custom
-import I18n from 'react-native-i18n'
 import Styles from './Styles/ContactsScreenStyle'
 import {Images, Colors} from '../Themes'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import CommonActions from '../Redux/CommonRedux'
 import WebIMActions from '../Redux/WebIMRedux'
 import RosterActions from '../Redux/RosterRedux'
 import SubscribeActions from '../Redux/SubscribeRedux'
-import AddContactModal from '../Containers/AddContactModal'
 import {Actions as NavigationActions} from 'react-native-router-flux'
 import Button from '../Components/Button'
 import BaseListView from '../Components/BaseListView'
@@ -39,11 +34,7 @@ class ContactsScreen extends React.Component {
       notifyCount: 0,
       presses: 0,
       data: {
-        // [群组通知，好友通知, 通知总数]
-        // notices: [null,subscribes, length],
         notices: [],
-        // 作为Groups的快捷按钮使用
-        groupHeader: ['INIT'],
         friends: []
       }
     }
@@ -66,7 +57,6 @@ class ContactsScreen extends React.Component {
     this.setState({
       data: {
         notices: [null, subscribes, Object.keys(subscribes).length > 0],
-        groupHeader: ['INIT'],
         friends: friendsFilter
       }
     })
@@ -78,8 +68,6 @@ class ContactsScreen extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // TODO: 是否需要更新的校验
-    // TODO: props更新，有没有更好的方式通知
     this.updateList(nextProps, this.state.search)
   }
 
@@ -87,7 +75,6 @@ class ContactsScreen extends React.Component {
   handleRefresh () {
     this.setState({isRefreshing: true})
     this.props.getContacts()
-    // TODO: 刷新成功/刷新失败
     setTimeout(() => {
       this.setState({isRefreshing: false})
     }, 1000)
@@ -184,14 +171,9 @@ class ContactsScreen extends React.Component {
   _renderContent () {
     return (
       <View style={[Styles.container]}>
-        {/* 头部 */}
         <View style={Styles.header}>
-          {/* TODO: Input */}
           {this._renderInput()}
-          {/* TODO: longPress */}
-          {/* 取消按钮，当input聚焦的时候出现 */}
           {this._renderCancel()}
-          {/* 加号 */}
           <TouchableOpacity style={Styles.searchPlus} onPress={NavigationActions.addContactModal}>
             <Ionicons size={30} name='ios-add' color={Colors.buttonGreen} />
           </TouchableOpacity>
@@ -208,16 +190,12 @@ class ContactsScreen extends React.Component {
   }
 
   _renderRow (rowData, sectionId, rowID, highlightRow) {
-    // console.log(sectionId, rowData, typeof rowData == 'boolean')
     switch (sectionId) {
       case 'friends':
         return this._renderSectionFriends(rowData)
       case 'notices':
-        // 无通知消息
         if (rowData == null) return null
-        // 空白分割行，参数是未读消息数目
         if (typeof rowData === 'boolean') return rowData ? this._renderSectionNoticesSpace() : null
-        // 有通知消息
         return this._renderSectionNotices(rowData)
       default:
         return null
@@ -263,7 +241,6 @@ class ContactsScreen extends React.Component {
   }
 
   _renderSectionNoticesSpace () {
-    // console.log('gogoogo')
     return (
       <View style={{height: 30, backgroundColor: '#e4e9ec'}} />
     )
@@ -274,7 +251,7 @@ class ContactsScreen extends React.Component {
     let keys = Object.keys(rowData)
 
     keys.forEach((k) => {
-      v = rowData[k]
+      const v = rowData[k]
       requests.push(
         <View key={`request-${k}`}>
           <View style={Styles.row}>
@@ -310,11 +287,8 @@ class ContactsScreen extends React.Component {
   }
 
   _renderSeparator (sectionID, rowID, adjacentRowHighlighted) {
-    // only friends list needed separator line
-    // 只有好友列表才需要分割线
     if (sectionID !== 'friends') return null
     return (
-      // backgroundColor: adjacentRowHighlighted ? '#3B5998' : '#CCCCCC',
       <View
         key={`${sectionID}-${rowID}`}
         style={Styles.separator}

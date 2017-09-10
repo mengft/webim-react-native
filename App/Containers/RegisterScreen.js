@@ -22,8 +22,6 @@ class RegisterScreen extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      // username: 'reactnative@infinite.red11123',
-      // password: 'password',
       visibleHeight: Metrics.screenHeight,
       topLogo: {}
     }
@@ -31,19 +29,9 @@ class RegisterScreen extends React.Component {
   }
 
   componentWillReceiveProps (newProps) {
-    // this.forceUpdate()
-    // Did the login attempt complete?
-    // console.log('newProps', newProps)
-    // if (this.isAttempting && !newProps.fetching && !newProps.registerError) {
-    //   NavigationActions.login()
-    //
-    //   // NavigationActions.pop()
-    // }
   }
 
   componentWillMount () {
-    // Using keyboardWillShow/Hide looks 1,000 times better, but doesn't work on Android
-    // TODO: Revisit this if Android begins to support - https://github.com/facebook/react-native/issues/3468
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow)
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)
   }
@@ -54,7 +42,6 @@ class RegisterScreen extends React.Component {
   }
 
   keyboardDidShow = (e) => {
-    // Animation types easeInEaseOut/linear/spring
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     let newSize = Metrics.screenHeight - e.endCoordinates.height
     this.setState({
@@ -64,7 +51,6 @@ class RegisterScreen extends React.Component {
   }
 
   keyboardDidHide = (e) => {
-    // Animation types easeInEaseOut/linear/spring
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     this.setState({
       visibleHeight: Metrics.screenHeight,
@@ -83,7 +69,6 @@ class RegisterScreen extends React.Component {
     }
 
     this.isAttempting = true
-    // attempt a login - a saga is listening to pick it up from here.
     this.props.attemptRegister(username, password)
   }
 
@@ -97,8 +82,7 @@ class RegisterScreen extends React.Component {
 
   render () {
     const {username, password} = this.state
-    const { fetching } = this.props
-    const editable = true //! fetching
+    const editable = true
     const textInputStyle = editable ? Styles.textInput : Styles.textInputReadonly
     let otherView = '<Text></Text>'
 

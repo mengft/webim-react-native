@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react'
+import React, { PropTypes } from 'react'
 import {connect} from 'react-redux'
 import {
   RefreshControl,
@@ -6,22 +6,16 @@ import {
   TouchableOpacity,
   TextInput,
   Text,
-  StyleSheet,
-  ScrollView,
   ListView,
-  StatusBar,
   Image,
   RecyclerViewBackedScrollView,
-  TouchableHighlight,
   TouchableWithoutFeedback
 } from 'react-native'
 
-// custom
 import I18n from 'react-native-i18n'
 import Styles from './Styles/ContactsScreenStyle'
 import {Images, Colors} from '../Themes'
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import CommonActions from '../Redux/CommonRedux'
 import WebIMActions from '../Redux/WebIMRedux'
 import RosterActions from '../Redux/RosterRedux'
@@ -31,16 +25,13 @@ import {Actions as NavigationActions} from 'react-native-router-flux'
 import Button from '../Components/Button'
 
 class ContactsAndroidScreen extends React.Component {
-
-  // ------------ init -------------
-
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
       sectionHeaderHasChanged: (s1, s2) => s1 !== s2
-    });
+    })
 
     this.state = {
       isRefreshing: false,
@@ -52,25 +43,21 @@ class ContactsAndroidScreen extends React.Component {
       presses: 0,
       ds,
       dataSource: ds.cloneWithRowsAndSections({
-        // [群组通知，好友通知, 通知总数]
-        // notices: [null,subscribes, length],
         notices: [],
-        // 作为Groups的快捷按钮使用
-        groupHeader: ['INIT'],
-        friends: [],
+        friends: []
       })
     }
   }
 
   // ------------ logic  ---------------
 
-  updateList(props, search = '') {
-    props = props || this.props;
+  updateList (props, search = '') {
+    props = props || this.props
     let roster = props.roster || []
     let subscribes = props.subscribes || []
     let friends = roster && roster.friends
 
-    if (this.state.search != search) {
+    if (this.state.search !== search) {
       let friendsFilter = friends.filter((name) => {
         return name.indexOf(search) !== -1
       })
@@ -78,7 +65,6 @@ class ContactsAndroidScreen extends React.Component {
       this.setState({
         dataSource: this.state.ds.cloneWithRowsAndSections({
           notices: [null, subscribes, Object.keys(subscribes).length > 0],
-          groupHeader: ['INIT'],
           friends: friendsFilter
         })
       })
@@ -86,103 +72,91 @@ class ContactsAndroidScreen extends React.Component {
       this.setState({
         dataSource: this.state.ds.cloneWithRowsAndSections({
           notices: [null, subscribes, Object.keys(subscribes).length > 0],
-          groupHeader: ['INIT'],
           friends: friends
         })
       })
     }
   }
 
-
   // ------------ lifecycle ------------
-  componentDidMount() {
+  componentDidMount () {
     this.updateList()
   }
 
-  componentWillReceiveProps(nextProps) {
-    // TODO: 是否需要更新的校验
-    // TODO: props更新，有没有更好的方式通知
+  componentWillReceiveProps (nextProps) {
     this.updateList(nextProps)
   }
 
   // ------------ handlers -------------
-  handleRefresh() {
+  handleRefresh () {
     this.setState({isRefreshing: true})
     this.props.getContacts()
-    // TODO: 刷新成功/刷新失败
     setTimeout(() => {
       this.setState({isRefreshing: false})
     }, 1000)
   }
 
-  handleSelectSearch() {
+  handleSelectSearch () {
     this.refs.search && this.refs.search.focus()
     this.setState({focused: true})
   }
 
-  handleChangeSearch(text) {
+  handleChangeSearch (text) {
     this.updateList(false, text)
     this.setState({search: text})
   }
 
-  handleFocusSearch() {
+  handleFocusSearch () {
     this.setState({focused: true})
   }
 
-  handleBlurSearch() {
+  handleBlurSearch () {
     this.refs.search.blur()
     this.setState({focused: false})
   }
 
-  handleCancelSearch() {
+  handleCancelSearch () {
     this.refs.search.blur()
     this.setState({
       focused: false,
-      search: null,
+      search: null
     })
     this.updateList()
   }
 
-  handleAddContact(id) {
-    // TODO: 已经是好友了
-    // TODO: 已经发送过邀请了
-
-    //TODO: 提示
+  handleAddContact (id) {
     if (!id.trim()) {
-      return;
+      return
     }
 
-    //TODO: 提示
-    if (this.props.user == id.trim()) {
-      return;
+    if (this.props.user === id.trim()) {
+      return
     }
     this.props.addContact(id)
   }
 
-  handleDecline(name) {
+  handleDecline (name) {
     this.props.declineSubscribe(name)
   }
 
-  handleAccept(name) {
+  handleAccept (name) {
     this.props.acceptSubscribe(name)
   }
 
   // ------------ renders -------------
-  _renderInput() {
+  _renderInput () {
     return (
       <TouchableWithoutFeedback onPress={this.handleSelectSearch.bind(this)}>
-        {/* 保证搜索按钮的左侧区域点击也会触发input的聚焦事件 */}
         <View style={Styles.search}>
           <View style={[Styles.searchRow, Styles.searchIcon, this.state.focused ? Styles.searchFocus : {}]}>
-            <Ionicons name="ios-search-outline" size={15} color='#8798a4'/>
-            {/*<Icon name='ios-add' size={20} color='#8798a4'/>*/}
+            <Ionicons name='ios-search-outline' size={15} color='#8798a4' />
           </View>
           <View style={[Styles.searchRow, Styles.searchInputView]}>
             <TextInput
               ref='search'
               style={Styles.searchInput}
               value={this.state.search}
-              editable={true}
+              editable
               keyboardType='default'
               returnKeyType='go'
               autoCapitalize='none'
@@ -202,17 +176,17 @@ class ContactsAndroidScreen extends React.Component {
     )
   }
 
-  _renderCancel() {
+  _renderCancel () {
     return this.state.focused ? (
-        <TouchableOpacity style={Styles.searchCancel} onPress={this.handleCancelSearch.bind(this)}>
-          <View>
-            <Text>Cancel</Text>
-          </View>
-        </TouchableOpacity>
-      ) : null;
+      <TouchableOpacity style={Styles.searchCancel} onPress={this.handleCancelSearch.bind(this)}>
+        <View>
+          <Text>Cancel</Text>
+        </View>
+      </TouchableOpacity>
+      ) : null
   }
 
-  _renderModel() {
+  _renderModel () {
     return (
       <AddContactModal
         modalVisible={this.state.modalVisible}
@@ -224,38 +198,31 @@ class ContactsAndroidScreen extends React.Component {
     )
   }
 
-  _renderContent(color, pageText, num) {
-
+  _renderContent (color, pageText, num) {
     return (
       <View style={[Styles.container]}>
-        {/* 头部 */}
         <View style={Styles.header}>
-          {/* TODO: Input */}
           {this._renderInput()}
-          {/* TODO: longPress */}
-          {/* 取消按钮，当input聚焦的时候出现 */}
           {this._renderCancel()}
-          {/* 加号 */}
           <TouchableOpacity style={Styles.searchPlus} onPress={NavigationActions.addContactModal}>
-            <Ionicons size={30} name="ios-add" color={Colors.buttonGreen}/>
+            <Ionicons size={30} name='ios-add' color={Colors.buttonGreen} />
           </TouchableOpacity>
         </View>
-        {/* 内容区：listview */}
         <ListView
           refreshControl={
             <RefreshControl
               refreshing={this.state.isRefreshing}
               onRefresh={this.handleRefresh.bind(this)}
-              tintColor="#ff0000"
-              title="Loading..."
-              titleColor="#00ff00"
+              tintColor='#ff0000'
+              title='Loading...'
+              titleColor='#00ff00'
               colors={['#ff0000', '#00ff00', '#0000ff']}
-              progressBackgroundColor="#ffff00"
+              progressBackgroundColor='#ffff00'
             />
           }
           automaticallyAdjustContentInsets={false}
           initialListSize={10}
-          enableEmptySections={true}
+          enableEmptySections
           style={Styles.listView}
           dataSource={this.state.dataSource}
           renderRow={this._renderRow.bind(this)}
@@ -267,36 +234,26 @@ class ContactsAndroidScreen extends React.Component {
     )
   }
 
-  _renderRow(rowData, sectionId, rowID, highlightRow) {
-    // console.log(rowData, typeof rowData == 'boolean')
+  _renderRow (rowData, sectionId, rowID, highlightRow) {
     switch (sectionId) {
-      case 'groupHeader':
-        return this._renderSectionGroupHeader()
-        break;
       case 'friends':
         return this._renderSectionFriends(rowData)
-        break;
       case 'notices':
-        // 无通知消息
         if (rowData == null) return null
-        // 空白分割行，参数是未读消息数目
-        if (typeof rowData == 'boolean') return rowData ? this._renderSectionNoticesSpace() : null
-        // 有通知消息
+        if (typeof rowData === 'boolean') return rowData ? this._renderSectionNoticesSpace() : null
         return this._renderSectionNotices(rowData)
-        break;
       default:
         return null
-        break;
     }
   }
 
-  _renderSectionFriends(rowData) {
+  _renderSectionFriends (rowData) {
     return (
       <TouchableOpacity onPress={() => {
-        NavigationActions.contactInfo({"uid": rowData})
+        NavigationActions.contactInfo({'uid': rowData})
       }}>
         <View style={Styles.row}>
-          <Image source={Images.default} resizeMode='cover' style={Styles.rowLogo}/>
+          <Image source={Images.default} resizeMode='cover' style={Styles.rowLogo} />
           <View style={Styles.rowName}>
             <Text>{rowData}</Text>
           </View>
@@ -305,17 +262,17 @@ class ContactsAndroidScreen extends React.Component {
     )
   }
 
-  _renderSectionNotices(rowData) {
+  _renderSectionNotices (rowData) {
     let keys = Object.keys(rowData)
-    if (keys.length == 0) return null
+    if (keys.length === 0) return null
     return (
       <View>
         <View style={Styles.noticeHeaderWrapper}>
           <View style={Styles.noticeHeaderLeft}>
-            <Image source={Images.requestsIcon}/>
+            <Image source={Images.requestsIcon} />
           </View>
           <View style={Styles.noticeHeaderMiddle}>
-            <Text style={Styles.noticeHeaderText}>{I18n.t('contactRequests')}</Text>
+            <Text style={Styles.noticeHeaderText}>好友请求</Text>
           </View>
           <View style={Styles.noticeHeaderRight}>
             <Text
@@ -327,24 +284,22 @@ class ContactsAndroidScreen extends React.Component {
     )
   }
 
-  _renderSectionNoticesSpace() {
-    // console.log('gogoogo')
+  _renderSectionNoticesSpace () {
     return (
-      <View style={{height: 30, backgroundColor: '#e4e9ec'}}>
-      </View>
+      <View style={{height: 30, backgroundColor: '#e4e9ec'}} />
     )
   }
 
-  _renderSectionnoticesRequests(rowData) {
+  _renderSectionnoticesRequests (rowData) {
     let requests = []
-    let keys = Object.keys(rowData);
+    let keys = Object.keys(rowData)
 
     keys.forEach((k) => {
-      v = rowData[k]
+      const v = rowData[k]
       requests.push(
         <View key={`request-${k}`}>
           <View style={Styles.row}>
-            <Image source={Images.default} resizeMode='cover' style={Styles.rowLogo}/>
+            <Image source={Images.default} resizeMode='cover' style={Styles.rowLogo} />
             <View style={Styles.rowName}>
               <Text>{v.from}</Text>
             </View>
@@ -354,7 +309,7 @@ class ContactsAndroidScreen extends React.Component {
                 onPress={() => {
                   this.handleAccept(v.from)
                 }}
-                text={I18n.t('accept')}
+                text={'接受'}
                 color={Colors.snow}
                 backgroundColor={Colors.buttonGreen}
               />
@@ -363,7 +318,7 @@ class ContactsAndroidScreen extends React.Component {
                 onPress={() => {
                   this.handleDecline(v.from)
                 }}
-                text={I18n.t('decline')}
+                text={'拒绝'}
                 color={Colors.snow}
                 backgroundColor={Colors.buttonGrey}
               />
@@ -375,32 +330,9 @@ class ContactsAndroidScreen extends React.Component {
     return requests
   }
 
-  _renderSectionGroupHeader() {
+  _renderSeparator (sectionID, rowID, adjacentRowHighlighted) {
+    if (sectionID !== 'friends') return null
     return (
-      <TouchableOpacity onPress={() => {
-        NavigationActions.groupList()
-      }}>
-        {/* <TouchableHighlight animationVelocity={0} underlayColor="#ccc" activeOpacity={1}> */}
-        {/* TODO: highlight 无效 */}
-        <View style={Styles.groupHeader}>
-          <View style={Styles.groupHeaderTextWrapper}>
-            <Text style={Styles.groupHeaderText}>{I18n.t('groups')}</Text>
-          </View>
-          <View style={Styles.groupHeaderIcon}>
-            <Icon name="chevron-right" size={13} color={Colors.blueGrey}/>
-          </View>
-        </View>
-        {/* </TouchableHighlight> */}
-      </TouchableOpacity>
-    )
-  }
-
-  _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
-    // only friends list needed separator line
-    // 只有好友列表才需要分割线
-    if (sectionID != 'friends') return null;
-    return (
-      // backgroundColor: adjacentRowHighlighted ? '#3B5998' : '#CCCCCC',
       <View
         key={`${sectionID}-${rowID}`}
         style={Styles.separator}
@@ -409,13 +341,12 @@ class ContactsAndroidScreen extends React.Component {
   }
 
   // ------------ rende -------------
-  render() {
+  render () {
     return (
       this._renderContent('#414A8C', 'Blue Tab')
     )
   }
 }
-
 
 ContactsAndroidScreen.propTypes = {
   roster: PropTypes.shape({
@@ -428,7 +359,7 @@ const mapStateToProps = (state) => {
   return {
     roster: state.entities.roster,
     subscribes: state.entities.subscribe.byFrom,
-    user: state.ui.login.username,
+    user: state.ui.login.username
   }
 }
 
@@ -439,15 +370,13 @@ const mapDispatchToProps = (dispatch) => {
 
       setTimeout(() => {
         dispatch(CommonActions.fetched())
-
       }, 3000)
-
     },
     getContacts: () => dispatch(RosterActions.getContacts()),
     addContact: (id) => dispatch(RosterActions.addContact(id)),
     acceptSubscribe: (name) => dispatch(SubscribeActions.acceptSubscribe(name)),
     declineSubscribe: (name) => dispatch(SubscribeActions.declineSubscribe(name)),
-    logout: () => dispatch(WebIMActions.logout()),
+    logout: () => dispatch(WebIMActions.logout())
   }
 }
 

@@ -3,10 +3,8 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {
-  Alert,
   View,
   Text,
-  Switch,
   Image,
   ScrollView,
   TouchableOpacity,
@@ -27,7 +25,7 @@ const SHEET_BUTTON = ['删除', '取消']
 
 class ContactInfoScreen extends Component {
   // ------------ init -------------
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       isBlocked: false
@@ -35,7 +33,7 @@ class ContactInfoScreen extends Component {
   }
 
   // ------------ logic  ---------------
-  setBlock(props) {
+  setBlock (props) {
     const {uid, names, rosterNames} = props
     let isBlocked = names.indexOf(uid) !== -1
     this.setState({
@@ -48,24 +46,24 @@ class ContactInfoScreen extends Component {
   }
 
   // ------------ lifecycle  ---------------
-  componentDidMount() {
+  componentDidMount () {
     this.setBlock(this.props)
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     this.setBlock(nextProps)
   }
 
   // ------------ renders -------------
 
-  handleDelete() {
+  handleDelete () {
     if (Platform.OS === 'ios') {
-      //TODO: 不同button如何定义不同的颜色
+      // TODO: 不同button如何定义不同的颜色
       ActionSheetIOS.showActionSheetWithOptions({
-          options: SHEET_BUTTON,
-          cancelButtonIndex: 1,
-          tintColor: [Colors.orangeRed]
-        },
+        options: SHEET_BUTTON,
+        cancelButtonIndex: 1,
+        tintColor: [Colors.orangeRed]
+      },
         (buttonIndex) => {
           // this.setState({clicked: SHEET_BUTTON[buttonIndex]});
           if (SHEET_BUTTON[buttonIndex] === '删除') {
@@ -75,10 +73,9 @@ class ContactInfoScreen extends Component {
     } else if (Platform.OS === 'android') {
       this.props.removeContact(this.props.uid)
     }
-
   }
 
-  handleSwitch(v) {
+  handleSwitch (v) {
     this.setState({
       isBlocked: v
     })
@@ -90,24 +87,20 @@ class ContactInfoScreen extends Component {
   }
 
   // ------------ render -------------
-  render() {
-    const {uid, names} = this.props
-    const {isBlocked} = this.state
-
-    {/*contentOffset={{x: 0, y: -10}}*/
-    }
+  render () {
+    const { uid } = this.props
     return (
       <View style={[Styles.container]}>
         <ScrollView
           style={[Styles.scrollView, {width: Metrics.screenWidth, height: Metrics.screenHeight}]}
           ref='ScrollView'
-          directionalLockEnabled={true}
+          directionalLockEnabled
           contentContainerStyle={Styles.contentContainerStyle}
           automaticallyAdjustContentInsets={false}
         >
           <View style={Styles.top}>
-            <InfoNavBar containerStyle={{borderBottomWidth: 0}}/>
-            <Image source={Images.default} resizeMode='cover' style={Styles.photo}/>
+            <InfoNavBar containerStyle={{borderBottomWidth: 0}} />
+            <Image source={Images.default} resizeMode='cover' style={Styles.photo} />
             <Text style={Styles.name}>{uid}</Text>
           </View>
           {/* 信息区 */}
@@ -154,8 +147,7 @@ class ContactInfoScreen extends Component {
 }
 
 ContactInfoScreen.propTypes = {
-  // 当前查看的用户id
-  uid: PropTypes.string,
+  uid: PropTypes.string
 }
 
 // ------------ redux -------------
@@ -170,7 +162,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     removeContact: (id) => dispatch(RosterActions.removeContact(id)),
     doAddBlacklist: (id) => dispatch(BlacklistActions.doAddBlacklist(id)),
-    doRemoveBlacklist: (id) => dispatch(BlacklistActions.doRemoveBlacklist(id)),
+    doRemoveBlacklist: (id) => dispatch(BlacklistActions.doRemoveBlacklist(id))
   }
 }
 

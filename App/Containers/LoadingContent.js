@@ -1,5 +1,3 @@
-// @flow
-
 import React, {Component} from 'react'
 import {
   View,
@@ -7,44 +5,28 @@ import {
 } from 'react-native'
 import {connect} from 'react-redux'
 
-// import styles from './Styles/LoadingContentStyle'
-// import {Images} from '../Themes'
-// import DrawerButton from '../Components/DrawerButton'
-// import {Actions as NavigationActions} from 'react-native-router-flux'
-
 class LoadingContent extends Component {
-
-  constructor(props) {
+  constructor (props) {
     super(props)
-    // set state with passed in props
     this.state = {
       message: props.error,
-      hide: props.hide,
+      hide: props.hide
     }
-    // bind functions
     this.dismissModal = this.dismissModal.bind(this)
   }
 
-  dismissModal() {
+  dismissModal () {
     this.setState({hide: true})
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     console.log(nextProps)
   }
 
-  componentDidMount() {
-    // BackAndroid.addEventListener('hardwareBackPress', () => {
-    //   if (this.context.drawer.props.open) {
-    //     this.toggleDrawer()
-    //     return true
-    //   }
-    //   return false
-    // })
-    // TODO: 10秒没有通知即关闭loading防止应该用户正常操作
+  componentDidMount () {
   }
 
-  componentDidUpdate() {
+  componentDidUpdate () {
     setTimeout(() => {
       console.log('setTimeout', this.context.drawer.props)
       if (this.context.drawer.props.open) {
@@ -54,15 +36,11 @@ class LoadingContent extends Component {
     }, 2000)
   }
 
-  toggleDrawer() {
+  toggleDrawer () {
     this.context.drawer.toggle()
   }
 
-
-  render() {
-    // if(this.props.hide) {
-    //   return null
-    // }
+  render () {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent'}}>
         <View style={{
@@ -74,16 +52,15 @@ class LoadingContent extends Component {
           borderRadius: 10
         }}>
           <ActivityIndicator
-            animating={true}
+            animating
             style={{}}
-            color="#fff"
-            size="large"
+            color='#fff'
+            size='large'
           />
         </View>
       </View>
     )
   }
-
 }
 
 LoadingContent.contextTypes = {
@@ -92,7 +69,7 @@ LoadingContent.contextTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    hide: !state.ui.common.fetching,
+    hide: !state.ui.common.fetching
   }
 }
 
@@ -101,4 +78,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoadingContent)
-

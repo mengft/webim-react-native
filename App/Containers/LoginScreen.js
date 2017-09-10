@@ -20,28 +20,7 @@ import LoginActions from '../Redux/LoginRedux'
 import {Actions as NavigationActions} from 'react-native-router-flux'
 import I18n from 'react-native-i18n'
 
-// type LoginScreenProps = {
-//   dispatch: () => any,
-//   fetching: boolean,
-//   attemptLogin: () => void
-// }
-
 class LoginScreen extends React.Component {
-  // props: LoginScreenProps
-
-  // state: {
-  //   username: string,
-  //   password: string,
-  //   visibleHeight: number,
-  //   topLogo: {
-  //     width: number
-  //   }
-  // }
-
-  // isAttempting: boolean
-  // keyboardDidShowListener: Object
-  // keyboardDidHideListener: Object
-
   constructor (props) {
     super(props)
     this.state = {
@@ -54,19 +33,10 @@ class LoginScreen extends React.Component {
   }
 
   componentWillReceiveProps (newProps) {
-    // this.forceUpdate()
-    // Did the login attempt complete?
-    // console.log('newProps', newProps)
-    // if (this.isAttempting && !newProps.fetching && !newProps.error) {
-    //   NavigationActions.contacts()
-    //
-    //   // NavigationActions.pop()
-    // }
+
   }
 
   componentWillMount () {
-    // Using keyboardWillShow/Hide looks 1,000 times better, but doesn't work on Android
-    // TODO: Revisit this if Android begins to support - https://github.com/facebook/react-native/issues/3468
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow)
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)
   }
@@ -77,7 +47,6 @@ class LoginScreen extends React.Component {
   }
 
   keyboardDidShow = (e) => {
-    // Animation types easeInEaseOut/linear/spring
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     let newSize = Metrics.screenHeight - e.endCoordinates.height
     console.log(newSize)
@@ -88,7 +57,6 @@ class LoginScreen extends React.Component {
   }
 
   keyboardDidHide = (e) => {
-    // Animation types easeInEaseOut/linear/spring
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     this.setState({
       visibleHeight: Metrics.screenHeight,
@@ -107,7 +75,6 @@ class LoginScreen extends React.Component {
     }
 
     this.isAttempting = true
-    // attempt a login - a saga is listening to pick it up from here.
     this.props.attemptLogin(username, password)
   }
 
@@ -121,8 +88,7 @@ class LoginScreen extends React.Component {
 
   render () {
     const {username, password} = this.state
-    const { fetching } = this.props
-    const editable = true//! fetching
+    const editable = true
     const textInputStyle = editable ? Styles.textInput : Styles.textInputReadonly
     let otherView = '<Text></Text>'
 

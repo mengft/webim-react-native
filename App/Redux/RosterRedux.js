@@ -17,7 +17,7 @@ const {Types, Creators} = createActions({
           dispatch(Creators.updateRoster(roster))
         },
         error: (error) => {
-          //TODO ERROR
+          // TODO ERROR
         }
       })
     }
@@ -25,21 +25,21 @@ const {Types, Creators} = createActions({
   // 删除联系人
   removeContact: (id) => {
     return (dispatch, getState) => {
-      //loading
+      // loading
       dispatch(CommonActions.fetching())
       WebIM.conn.removeRoster({
         to: id,
         success: function () {
-          //loading end
+          // loading end
           dispatch(CommonActions.fetched())
           dispatch(Creators.getContacts())
 
           WebIM.conn.unsubscribed({
             to: id
-          });
+          })
         },
         error: function () {
-          //TODO ERROR
+          // TODO ERROR
         }
       })
     }
@@ -52,7 +52,7 @@ const {Types, Creators} = createActions({
         message: I18n.t('request')
       })
     }
-  },
+  }
 })
 
 export const RosterTypes = Types
@@ -66,14 +66,14 @@ export const INITIAL_STATE = Immutable({
 })
 
 /* ------------- Reducers ------------- */
-function isFriend(v) {
+function isFriend (v) {
   return v.subscription != 'none'
 }
 
 export const updateRoster = (state, {roster}) => {
   let byName = {},
     names = [],
-    friends = [];
+    friends = []
   roster.forEach((v) => {
     byName[v.name] = v
     names = Object.keys(byName).sort()
@@ -82,13 +82,13 @@ export const updateRoster = (state, {roster}) => {
   return state.merge({
     byName,
     names,
-    friends,
+    friends
   })
 }
 
 /* ------------- Hookup Reducers To Types ------------- */
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.UPDATE_ROSTER]: updateRoster,
+  [Types.UPDATE_ROSTER]: updateRoster
 })
 
 /* ------------- Selectors ------------- */

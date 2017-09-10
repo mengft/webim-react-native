@@ -6,7 +6,6 @@ import {Alert, View, LayoutAnimation, Keyboard, Platform} from 'react-native'
 import I18n from 'react-native-i18n'
 import {Colors} from '../Themes'
 import Styles from './Styles/AddContactModalStyle'
-import ModalHeader from '../Components/ModalHeader'
 import Button from '../Components/Button'
 import Input from '../Components/Input'
 import RosterActions from '../Redux/RosterRedux'
@@ -20,14 +19,7 @@ class AddContactModal extends Component {
     }
   }
 
-  // ------------ init -------------
-
-  // ------------ lifecycle ------------
-
-  // ------------ handlers -------------
   componentWillMount () {
-    // Using keyboardWillShow/Hide looks 1,000 times better, but doesn't work on Android
-    // TODO: Revisit this if Android begins to support - https://github.com/facebook/react-native/issues/3468
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow)
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)
   }
@@ -38,7 +30,6 @@ class AddContactModal extends Component {
   }
 
   keyboardDidShow = (e) => {
-    // Animation types easeInEaseOut/linear/spring
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     this.setState({
       keyboardShow: true
@@ -46,7 +37,6 @@ class AddContactModal extends Component {
   }
 
   keyboardDidHide = (e) => {
-    // Animation types easeInEaseOut/linear/spring
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     this.setState({
       keyboardShow: false
@@ -54,15 +44,10 @@ class AddContactModal extends Component {
   }
 
   handleAddContact (id) {
-    // TODO: 已经是好友了
-    // TODO: 已经发送过邀请了
-
-    // TODO: 提示
     if (!id.trim()) {
       return
     }
 
-    // TODO: 提示
     if (this.props.user === id.trim()) {
       return
     }
@@ -74,7 +59,6 @@ class AddContactModal extends Component {
     this.props.addContact(id)
   }
 
-  // ------------ renders -------------
   render () {
     let {keyboardShow} = this.state
 

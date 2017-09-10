@@ -10,24 +10,19 @@ import {
   ActivityIndicator,
   Keyboard,
   LayoutAnimation,
-  Dimensions,
-  TouchableWithoutFeedback,
-  Animated
+  Dimensions
 } from 'react-native'
 
 // custom
 import I18n from 'react-native-i18n'
 import Styles from './Styles/MessageScreenStyle'
-import {Images, Colors, Metrics} from '../Themes'
+import {Images, Metrics} from '../Themes'
 import MessageActions from '../Redux/MessageRedux'
 import BaseListView from '../Components/BaseListView'
 import ImagePicker from 'react-native-image-picker'
 import Emoji from 'react-native-emoji'
-import Swiper from 'react-native-swiper'
 import WebIM from '../Lib/WebIM'
 import debounce from 'lodash.debounce'
-
-const { width, height } = Dimensions.get('window')
 
 const options = {
   title: 'Select Avatar',
@@ -60,10 +55,8 @@ class MessageScreen extends React.Component {
   // ------------ logic  ---------------
   updateList (props) {
     const {message, chatType, id} = props
-    const {byId} = message
     const chatTypeData = message[chatType] || {}
     const chatData = chatTypeData[id] || []
-    // console.log(chatType, id, message, chatTypeData, chatData)
     this.setState({
       messages: {
         messages: chatData
@@ -81,14 +74,10 @@ class MessageScreen extends React.Component {
   }
 
   componentWillMount () {
-    // Using keyboardWillShow/Hide looks 1,000 times better, but doesn't work on Android
-    // TODO: Revisit this if Android begins to support - https://github.com/facebook/react-native/issues/3468
     if (Platform.OS === 'ios') {
       this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardDidShow)
       this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardDidHide)
     } else {
-      // this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow)
-      // this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)
     }
   }
 
@@ -98,7 +87,6 @@ class MessageScreen extends React.Component {
   }
 
   keyboardDidShow = (e) => {
-    // Animation chatTypes easeInEaseOut/linear/spring
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     let newSize = Metrics.screenHeight - e.endCoordinates.height
     this.setState({
@@ -108,7 +96,6 @@ class MessageScreen extends React.Component {
   }
 
   keyboardDidHide = (e) => {
-    // Animation chatTypes easeInEaseOut/linear/spring
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     this.setState({
       keyboardHeight: 0,
@@ -118,8 +105,6 @@ class MessageScreen extends React.Component {
   // ------------ handlers -------------
   handleRefresh () {
     this.setState({isRefreshing: true})
-    // this.props.getContacts()
-    // TODO: 刷新成功/刷新失败
     setTimeout(() => {
       this.setState({isRefreshing: false})
     }, 1000)
@@ -174,10 +159,6 @@ class MessageScreen extends React.Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton)
       } else {
-          // You can display the image using either data...
-          // const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
-
-          // or a reference to the platform specific asset location
         let source = null
         if (Platform.OS === 'ios') {
           source = {uri: response.uri.replace('file://', ''), isStatic: true}
@@ -197,7 +178,6 @@ class MessageScreen extends React.Component {
     this.setState({
       isEmoji: false
     })
-    // Launch Camera:
     ImagePicker.launchCamera(options, (response) => {
       console.log('Response = ', response)
 
@@ -208,10 +188,6 @@ class MessageScreen extends React.Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton)
       } else {
-        // You can display the image using either data...
-        // const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
-
-        // or a reference to the platform specific asset location
         let source = null
         if (Platform.OS === 'ios') {
           source = {uri: response.uri.replace('file://', ''), isStatic: true}
@@ -285,7 +261,6 @@ class MessageScreen extends React.Component {
       <View style={[Styles.row, Styles.directionEnd]}>
         <Image source={Images.default} resizeMode='cover' style={[Styles.rowLogo, Styles.rowLogoRight]} />
         <View style={Styles.rowMessage}>
-          {/* <Text style={[Styles.nameText, Styles.textRight]}>{rowData.from}</Text> */}
           <View style={[Styles.message, Styles.messageRight]}>
             <Text style={[Styles.messageText, Styles.messageTextRight]}>{this._renderTxt(rowData.body.msg || '')}</Text>
           </View>
@@ -308,7 +283,6 @@ class MessageScreen extends React.Component {
       <View style={[Styles.row, Styles.directionEnd]}>
         <Image source={Images.default} resizeMode='cover' style={[Styles.rowLogo, Styles.rowLogoRight]} />
         <View style={Styles.rowMessage}>
-          {/* <Text style={[Styles.nameText, Styles.textRight]}>{rowData.from}</Text> */}
           <View style={[Styles.message, Styles.messageRight, Styles.messageImage]}>
             <Image source={{uri: body.uri || body.url}}
               style={[Styles.rowImage, {width, height}]} />
@@ -371,8 +345,6 @@ class MessageScreen extends React.Component {
   }
 
   _renderDate (time) {
-    // I18n.locale.substr(0, 2)
-    // .toLocaleString('zh-Hans-CN', {hour12: false, })
     const d = new Date(time)
     return `${d.getMonth() + 1}-${d.getDay() > 9 ? d.getDay() : '0' + d.getDay()} ${d.getHours()}:${d.getMinutes()}`
   }
@@ -390,7 +362,6 @@ class MessageScreen extends React.Component {
   _renderTxt (txt) {
     const emoji = WebIM.emoji
 
-    // 替换不能直接用replace，必须以数组组合的方式，因为混合着dom元素
     let rnTxt = []
     let match = null
     const regex = /(\[.*?\])/g
@@ -416,11 +387,10 @@ class MessageScreen extends React.Component {
   }
 
   _renderEmoji () {
-    const {isEmoji, focused} = this.state
+    const {isEmoji} = this.state
     const emoji = WebIM.emoji
     const emojiStyle = []
     const rowIconNum = 7
-    const rowNum = 3
     const emojis = Object.keys(emoji.map).map((v, k) => {
       const name = emoji.map[v]
       return (
@@ -512,15 +482,6 @@ class MessageScreen extends React.Component {
               isEmoji ? <Image source={Images.iconEmojiActive} /> : <Image source={Images.iconEmoji} />
             }
           </TouchableOpacity>
-          {/* <TouchableOpacity> */}
-          {/* <Image source={Images.iconAudio}/> */}
-          {/* </TouchableOpacity> */}
-          {/* <TouchableOpacity> */}
-          {/* <Image source={Images.iconLocation}/> */}
-          {/* </TouchableOpacity> */}
-          {/* <TouchableOpacity> */}
-          {/* <Image source={Images.iconFile}/> */}
-          {/* </TouchableOpacity> */}
         </View>
         {this._renderEmoji()}
       </View>
@@ -529,7 +490,7 @@ class MessageScreen extends React.Component {
 
 // ------------ render -------------
   render () {
-    const {messages = {}, visibleHeight, keyboardHeight} = this.state
+    const {messages = {}, keyboardHeight} = this.state
     return (
       <View style={[Styles.container, {flex: 1, flexDirection: 'column'}]}>
         <BaseListView
@@ -543,24 +504,17 @@ class MessageScreen extends React.Component {
         <View style={{height: keyboardHeight}} />
       </View>
     )
-
-    // <View style={{height: keyboardHeight, borderWidth: 1, borderColor: 'black'}}></View>
   }
 }
 
 MessageScreen.propTypes = {
   message: PropTypes.object
-  // chatType: PropTypes.oneOf(['chat', 'groupChat']),
-  // id: PropTypes.string
 }
 
 // ------------ redux -------------
 const mapStateToProps = (state) => {
   return {
-    // TODO: 如何过滤无用的请求 、普通聊天和群里拆离 or 判断props？
     message: state.entities.message
-    // chatType: 'chat',
-    // id: 'lwz3'
   }
 }
 

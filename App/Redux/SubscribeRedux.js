@@ -45,7 +45,7 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  byFrom: {},
+  byFrom: {}
 })
 
 /* ------------- Reducers ------------- */
@@ -68,7 +68,7 @@ export const removeSubscribe = (state, {name}) => {
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADD_SUBSCRIBE]: subscribe,
-  [Types.REMOVE_SUBSCRIBE]: removeSubscribe,
+  [Types.REMOVE_SUBSCRIBE]: removeSubscribe
 })
 
 /* ------------- Selectors ------------- */

@@ -20,28 +20,14 @@ import MessageActions from '../Redux/MessageRedux'
 import {Actions as NavigationActions} from 'react-native-router-flux'
 import axios from 'axios'
 
-const RouterWithRedux = connect()(RootContainer);
+const RouterWithRedux = connect()(RootContainer)
 
-// Apply config overrides
 applyConfigSettings()
-// create our store
 const store = createStore()
 
-/**
- * Provides an entry point into our application.  Both index.ios.js and index.android.js
- * call this component first.
- *
- * We create our Redux store here, put it into a provider and then bring in our
- * RootContainer.
- *
- * We separate like this to play nice with React Native's hot reloading.
- */
 class App extends Component {
-
-  constructor() {
+  constructor () {
     super()
-    // store.dispatch(LoginActions.login('lwz2', '1'))
-    // store.dispatch(LoginActions.login('w', 'w'))
 
     WebIM.conn.listen({
       // xmpp连接成功
@@ -69,22 +55,21 @@ class App extends Component {
             if (msg.status === '[resp:true]') {
               return
             }
-
             store.dispatch(SubscribeActions.addSubscribe(msg))
-            break;
+            break
           case 'subscribed':
             store.dispatch(RosterActions.getContacts())
             Alert.alert(msg.from + ' ' + I18n.t('subscribed'))
-            break;
+            break
           case 'unsubscribe':
             // TODO: 局部刷新
             store.dispatch(RosterActions.getContacts())
-            break;
+            break
           case 'unsubscribed':
             // 好友退订消息
             store.dispatch(RosterActions.getContacts())
             Alert.alert(msg.from + ' ' + I18n.t('unsubscribed'))
-            break;
+            break
         }
       },
       // 各种异常
@@ -92,20 +77,20 @@ class App extends Component {
         console.log(error)
         // 16: server-side close the websocket connection
         if (error.type === WebIM.statusCode.WEBIM_CONNCTION_DISCONNECTED) {
-          console.log('WEBIM_CONNCTION_DISCONNECTED', WebIM.conn.autoReconnectNumTotal, WebIM.conn.autoReconnectNumMax);
+          console.log('WEBIM_CONNCTION_DISCONNECTED', WebIM.conn.autoReconnectNumTotal, WebIM.conn.autoReconnectNumMax)
           if (WebIM.conn.autoReconnectNumTotal < WebIM.conn.autoReconnectNumMax) {
-            return;
+            return
           }
           Alert.alert('Error', 'server-side close the websocket connection')
           NavigationActions.login()
-          return;
+          return
         }
         // 8: offline by multi login
         if (error.type === WebIM.statusCode.WEBIM_CONNCTION_SERVER_ERROR) {
-          console.log('WEBIM_CONNCTION_SERVER_ERROR');
+          console.log('WEBIM_CONNCTION_SERVER_ERROR')
           Alert.alert('Error', 'offline by multi login')
           NavigationActions.login()
-          return;
+          return
         }
         if (error.type === 1) {
           let data = error.data ? error.data.data : ''
@@ -133,10 +118,10 @@ class App extends Component {
     })
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps () {
   }
 
-  render() {
+  render () {
     return (
       <Provider store={store}>
         <RouterWithRedux />

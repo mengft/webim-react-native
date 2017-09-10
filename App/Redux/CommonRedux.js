@@ -5,7 +5,7 @@ import Immutable from 'seamless-immutable'
 
 const {Types, Creators} = createActions({
   fetching: [],
-  fetched: [],
+  fetched: []
 })
 
 export const CommonTypes = Types
@@ -14,7 +14,7 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  fetching: false,
+  fetching: false
 })
 
 /* ------------- Reducers ------------- */
@@ -31,7 +31,7 @@ export const fetched = (state) => {
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.FETCHING]: fetching,
-  [Types.FETCHED]: fetched,
+  [Types.FETCHED]: fetched
 })
 
 /* ------------- Selectors ------------- */

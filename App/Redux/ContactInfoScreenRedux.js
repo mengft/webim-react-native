@@ -14,7 +14,7 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  show: true,
+  show: true
 })
 
 /* ------------- Reducers ------------- */
@@ -30,7 +30,7 @@ export const contactShowed = (state, {}) => {
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.CONTACT_DELETED]: contactDeleted,
-  [Types.CONTACT_SHOWED]: contactShowed,
+  [Types.CONTACT_SHOWED]: contactShowed
 })
 
 /* ------------- Selectors ------------- */

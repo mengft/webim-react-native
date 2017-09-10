@@ -10,7 +10,7 @@ export default create({
     // paddingTop: 33,
     backgroundColor: Colors.paleGrey,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
     // flexDirection: 'column'
   },
   scrollViewContainer: {
@@ -29,11 +29,11 @@ export default create({
     ios: {
       shadowOffset: {
         width: 0,
-        height: 0.1,
+        height: 0.1
       },
       shadowColor: Colors.coolGrey50,
       shadowOpacity: 0.5,
-      shadowRadius: 0.1,
+      shadowRadius: 0.1
     },
     android: {
       elevation: 0.5
@@ -42,7 +42,7 @@ export default create({
   photo: {
     height: 60,
     width: 60,
-    borderRadius: 30,
+    borderRadius: 30
     // flex: 1,
   },
   name: {
@@ -75,20 +75,18 @@ export default create({
   },
   rowBorder: {
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.paleGrey,
+    borderBottomColor: Colors.paleGrey
   },
   flex: {
     flex: 1,
     justifyContent: 'center'
   },
   textLabel: {
-    // height: 14,
-    fontSize: 13,
-    color: Colors.steelGrey,
+    fontSize: 14,
+    color: Colors.steelGrey
   },
   text: {
-    // height: 14,
-    fontSize: 13,
+    fontSize: 13
   },
   deleteText: {
     color: 'red'
